@@ -12,14 +12,13 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - docker build -t $REPOSITORY_URI:latest .
-      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+      - docker build -t ecs-demo .
+      - docker tag ecs-demo:latest 992382443897.dkr.ecr.us-east-1.amazonaws.com/ecs-demo:latest
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image to Amazon ECR...
-      - docker push $REPOSITORY_URI:latest
-      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - docker push 992382443897.dkr.ecr.us-east-1.amazonaws.com/ecs-demo:latest
       - echo Writing image definitions file...
       - printf '[{"name":"demo-ecs-codepipeline","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
       - cat imagedefinitions.json
